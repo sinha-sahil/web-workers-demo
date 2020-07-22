@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+    <head>
+        <title> Web Workers </title>
+    </head>
+    <body>
+        <script>
+            let worker = new Worker('workerOne.js');
+            worker.postMessage("hey worker");
+        </script>
+    </body>
+</html>
