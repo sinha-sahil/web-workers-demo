@@ -3,9 +3,20 @@
         <title> Web Workers </title>
     </head>
     <body>
+
         <script>
+            // this one is the parent thread
             let worker = new Worker('workerOne.js');
             worker.postMessage("hey worker");
+
+            worker.addEventListener("message", (e) => {
+                console.log("data to main thread: ", e.data);
+            });
+            
+            worker.onmessage = (e) => {
+                console.log(e.data);
+            }
+
         </script>
     </body>
 </html>
