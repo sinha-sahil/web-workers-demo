@@ -1,22 +1,55 @@
 <!DOCTYPE html>
-    <head>
-        <title> Web Workers </title>
-    </head>
-    <body>
+<head>
+    <title> Web Workers </title>
+</head>
+<body>
+    <p> Welcome to Worker Demo</p>
 
-        <script>
-            // this one is the parent thread
-            let worker = new Worker('workerOne.js');
-            worker.postMessage("hey worker");
+    <script>
+        // dedicated worker
+        let worker = new Worker('dedicated_worker.js');
+        worker.postMessage("hey worker");
 
-            worker.addEventListener("message", (e) => {
-                console.log("data to main thread: ", e.data);
-            });
-            
-            worker.onmessage = (e) => {
-                console.log(e.data);
+        worker.addEventListener("message", (e) => {
+            console.log("data to main thread: ", e.data);
+        });
+        
+        worker.onmessage = (e) => {
+            console.log(e.data);
+        }
+
+        // proof of data is not being shared
+        // json objects don't share references
+
+        let jsonBody = 
+            { fName : "sahil"
+            , lName : "sinha"
+            , age : 20
             }
+        
+        worker.postMessage(jsonBody);
+        
+        jsonBody.fName = "sam";
+        console.log("updated data in main thread: ", jsonBody);
 
-        </script>
-    </body>
+        // terminating 
+        // this will close even before the first post message
+        // worker.terminate();
+        worker.postMessage("this should not work");
+
+        // shared workers
+
+        let sharedWorker = new SharedWorker('shared_worker.js');
+
+        sharedWorker.port.postMessage("hi from main thread");
+            
+        // if this is not done message from shared worker is not received
+        sharedWorker.port.start();
+        sharedWorker.port.addEventListener('message', (e)=>{
+            console.log("main thread: ", e.data);
+        });
+
+
+    </script>
+</body>
 </html>
