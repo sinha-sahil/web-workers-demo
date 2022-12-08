@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/sinha-sahil/web-workers-demo#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "nodemon": "^2.0.4",
     "path": "^0.12.7",
     "requestify": "^0.2.5"
